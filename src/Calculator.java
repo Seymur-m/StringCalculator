@@ -4,54 +4,63 @@ public class Calculator {
 
         Scanner scanner = new Scanner(System.in);
         String vvod = scanner.nextLine();
+        vvod = vvod.replace("\"", "");
+        String[] chast;
 
-        String [] chasti = vvod.split(" ");
-        String pervi = chasti[0];
-        String vitajeniye = chasti[1];
-        String vtoroi = chasti [2];
+        char virajeniye;
 
+        if (vvod.contains(" + ")) {
+            chast = vvod.split(" \\+ ");
+            virajeniye = '+';
 
-        switch (vitajeniye) {
-            case "+":
-                System.out.println(pervi+vtoroi);
-                break;
-
-            case "-":
-                System.out.println(pervi.replace(vtoroi,""));
-                break;
-
-
-            case "*":
-                int razi = Integer.parseInt(vtoroi);
-                StringBuilder umnojeniye = new StringBuilder();
-                for (int i = 0; i < razi; i++) {
-                    umnojeniye.append(pervi);
-                }
-                System.out.println(umnojeniye);
-                    break;
-
-            case "/":
-                int razi1 = Integer.parseInt(vtoroi);
-                if (razi1 != 0){
-                    String deleniye = pervi.substring(0,pervi.length() / razi1);
-                    System.out.println(deleniye);
-                    break;
-                }if(razi1 == 1){
-                System.out.println(pervi);
-                } else {
-                    throw new IllegalArgumentException("На ноль не делим");
-                }
-                break;
-
-            default:
-                System.out.println("Неизвестная олперация");
-                break;
-
-
+        } else if (vvod.contains(" - ")) {
+            chast = vvod.split(" - ");
+            virajeniye = '-';
+        } else if (vvod.contains(" / ")) {
+            chast = vvod.split(" / ");
+            virajeniye = '/';
+        } else if (vvod.contains(" * ")) {
+            chast = vvod.split(" \\* ");
+            virajeniye = '*';
+        } else {
+            throw new IllegalArgumentException("Неверный знак");
         }
 
 
-    }
+        if (virajeniye == '+') {
+            System.out.println("\"" + chast[0] + chast[1] + "\"");
 
+
+        } else if (virajeniye == '-') {
+            System.out.println("\"" + chast[0].replace(chast[1], "") + "\"");
+
+
+        } else if (virajeniye == '*') {
+            int razi = Integer.parseInt(chast[1]);
+            if (razi < 0 || razi > 10) {
+                throw new IllegalArgumentException("Число должно быть в диапазоне от 1 до 10 включительно");
+            }
+            StringBuilder umnojeniye = new StringBuilder();
+            for (int i = 0; i < razi; i++) {
+                umnojeniye.append(chast[0]);
+            }
+            if(umnojeniye.length() > 40){
+                System.out.println("\"" + umnojeniye.substring(0,40) + "..." + "\"");
+            } else {System.out.println("\"" + umnojeniye + "\"");}
+
+        } else if (virajeniye == '/') {
+            int razi1 = Integer.parseInt(chast[1]);
+            if (razi1 <= 0 || razi1 > 10) {
+                throw new IllegalArgumentException("Число должно быть в диапазоне от 1 до 10 включительно");
+            }
+            if (razi1 != 0 & razi1 > 0 && razi1 <= 10) {
+                String deleniye = chast[0].substring(0, chast[0].length() / razi1);
+                System.out.println("\"" + deleniye + "\"");
+
+            }
+
+        }
+
+    }
 
 }
